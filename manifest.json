@@ -1,18 +1,12 @@
 {
-    "manifest_version": 3,
-    "name": "Units-Convertor",
-    "version": "1.0",
-    "permissions": [
-        "activeTab"
-    ],
-    "content_scripts": [
-        {
-            "matches": [
-                "*://*/*"
-            ],
-            "js": [
-                "dist/main.js"
-            ]
-        }
-    ]
+  "manifest_version": 3,
+  "name": "Units-Convertor",
+  "version": "1.0",
+  "permissions": ["activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["dist/main.js"]
+    }
+  ]
 }
