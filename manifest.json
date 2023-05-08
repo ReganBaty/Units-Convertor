@@ -11,7 +11,7 @@
                 "*://*.reddit.com/*"
             ],
             "js": [
-                "main.js"
+                "dist/main.js"
             ]
         }
     ]
