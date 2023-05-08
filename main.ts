@@ -71,7 +71,6 @@ const update = (n: Node, t: any) => {
 }
 
 tests.forEach((t) => {
-
     let nodeIterator = document.createNodeIterator(
         document.body,
         NodeFilter.SHOW_TEXT)
