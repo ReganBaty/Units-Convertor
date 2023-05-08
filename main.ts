@@ -69,7 +69,7 @@ const update = (n: Node, t: any) => {
         }
     }
 }
-
+const t0 = performance.now();
 tests.forEach((t) => {
     let nodeIterator = document.createNodeIterator(
         document.body,
@@ -87,3 +87,5 @@ tests.forEach((t) => {
         update(n, t)
     })
 })
+const t1 = performance.now();
+console.log(`Call to doSomething took ${t1 - t0} milliseconds.`);
