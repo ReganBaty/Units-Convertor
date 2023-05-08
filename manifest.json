@@ -1,11 +1,10 @@
 {
     "manifest_version": 2,
-    "name": "Borderify",
+    "name": "Units-Convertor",
     "version": "1.0",
     "permissions": [
         "activeTab"
     ],
-    "description": "Adds a red border to all webpages matching mozilla.org.",
     "content_scripts": [
         {
             "matches": [
