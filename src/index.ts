@@ -1,62 +1,81 @@
 import { tests, TestResult } from "./tests";
 
-const update = (node: Node, test: (n: Node) => TestResult) => {
-  let testResult = test(node);
+const stuff = (node: Node) => {
+  let nodes: Node[] = [node];
+
+  tests.forEach((t) => {
+    const nodeRuns = nodes.map((n) => n);
+    let added = 0;
+    nodes.forEach((n, i) => {
+      if (n.nodeType == Node.TEXT_NODE) {
+        const nodes = runner(n, t);
+        nodeRuns.splice(i + added, 1, ...nodes);
+        added += nodes.length - 1;
+      }
+    });
+    nodes = nodeRuns;
+  });
+
+  const parent = node as Element;
+
+  parent.replaceWith(...nodes);
+};
+
+const runner = (node: Node, test: (n: string) => TestResult): Node[] => {
+  const text = node.textContent;
+  let testResult = test(text);
+  const nodes: Node[] = [];
 
   const index = testResult.match?.index;
 
-  if (testResult.match && index != -1) {
-    const span = document.createElement("span");
-    const parentNode = node.parentNode;
-    const before = document.createTextNode(node.textContent.slice(0, index));
-    const after = document.createTextNode(
-      node.textContent.slice(index + testResult.match[0].length)
-    );
-    span.innerText = node.textContent.slice(
-      index,
-      index + testResult.match[0].length
-    );
-    span.title = testResult.title;
-
-    parentNode.replaceChild(span, node);
-
-    if (span.previousSibling) {
-      span.previousSibling.after(before);
-    } else {
-      parentNode.prepend(before);
-    }
-
-    if (span.nextSibling) {
-      span.nextSibling.before(after);
-    } else {
-      parentNode.append(after);
-    }
-
-    if (after.textContent.trim()) {
-      update(span.nextSibling, test);
-    }
+  // No matches
+  if (!testResult.match || index == -1) {
+    return [node];
   }
+
+  const span = document.createElement("span");
+  span.innerText = node.textContent.slice(
+    index,
+    index + testResult.match[0].length
+  );
+  span.title = testResult.title;
+
+  const beforeText = node.textContent.slice(0, index);
+  if (beforeText) {
+    const before = document.createTextNode(beforeText);
+    nodes.push(before);
+  }
+
+  nodes.push(span);
+
+  const afterText = node.textContent.slice(index + testResult.match[0].length);
+
+  if (afterText) {
+    const after = document.createTextNode(afterText);
+
+    const results = runner(after, test);
+    nodes.push(...results);
+  }
+
+  return nodes;
 };
 
 const t0 = performance.now();
-tests.forEach((t) => {
-  let nodeIterator = document.createNodeIterator(
-    document.body,
-    NodeFilter.SHOW_TEXT
-  );
+const nodeIterator = document.createNodeIterator(
+  document.body,
+  NodeFilter.SHOW_TEXT
+);
 
-  // Move iterator into array to avoid working on modified document
-  let nodes: Node[] = [];
+// Move iterator into array to avoid working on modified document
+const nodes: Node[] = [];
 
-  let node = nodeIterator.nextNode();
-  while (node) {
-    nodes.push(node);
-    node = nodeIterator.nextNode();
-  }
-  nodes.forEach((n) => {
-    update(n, t);
-  });
-});
+let node = nodeIterator.nextNode();
+while (node) {
+  nodes.push(node);
+  node = nodeIterator.nextNode();
+}
+
+nodes.forEach((n) => stuff(n));
 
 const t1 = performance.now();
 console.log(`Document scanning took ${t1 - t0} milliseconds.`);

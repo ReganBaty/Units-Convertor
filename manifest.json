@@ -5,7 +5,10 @@
   "permissions": ["activeTab"],
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
+      "matches": [
+        "file:///home/steve/Documents/repos/borderify/src/test.html",
+        "*://*/*"
+      ],
       "js": ["dist/main.js"]
     }
   ]

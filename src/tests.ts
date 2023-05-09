@@ -3,9 +3,9 @@ export type TestResult = {
   title?: string;
 };
 
-const pounds = (n: Node): TestResult => {
+const pounds = (n: string): TestResult => {
   const regex = /((?:\d*\.*)\d+){1}\s*(?:lbs|pounds)/i;
-  const match = n.textContent?.match(regex);
+  const match = n.match(regex);
 
   if (!match) return { match };
 
@@ -20,9 +20,9 @@ const pounds = (n: Node): TestResult => {
   };
 };
 
-const feet = (n: Node): TestResult => {
+const feet = (n: string): TestResult => {
   const regex = /((?:\d*\.*)\d+){1}\s*(?:ft|feet|foot)/i;
-  const match = n.textContent?.match(regex);
+  const match = n.match(regex);
 
   if (!match) return { match };
 
@@ -37,4 +37,23 @@ const feet = (n: Node): TestResult => {
   };
 };
 
-export const tests = [pounds, feet];
+export const tests = [
+  feet,
+  pounds,
+  pounds,
+  pounds,
+  pounds,
+  pounds,
+  pounds,
+  pounds,
+  pounds,
+  pounds,
+  pounds,
+  pounds,
+  pounds,
+  pounds,
+  pounds,
+  pounds,
+  pounds,
+  pounds,
+];
