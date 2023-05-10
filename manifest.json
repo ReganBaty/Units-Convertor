@@ -5,7 +5,7 @@
   "permissions": ["activeTab"],
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
+      "matches": ["*://*/*", "file://*/*"],
       "js": ["dist/main.js"]
     }
   ]
