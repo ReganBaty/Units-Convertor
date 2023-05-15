@@ -38,25 +38,37 @@ const update = (node: Node, test: (n: Node) => TestResult) => {
   }
 };
 
-const t0 = performance.now();
-tests.forEach((t) => {
-  let nodeIterator = document.createNodeIterator(
-    document.body,
-    NodeFilter.SHOW_TEXT
-  );
+const run = () => {
+  const t0 = performance.now();
+  tests.forEach((t) => {
+    let nodeIterator = document.createNodeIterator(
+      document.body,
+      NodeFilter.SHOW_TEXT
+    );
 
-  // Move iterator into array to avoid working on modified document
-  let nodes: Node[] = [];
+    // Move iterator into array to avoid working on modified document
+    let nodes: Node[] = [];
 
-  let node = nodeIterator.nextNode();
-  while (node) {
-    nodes.push(node);
-    node = nodeIterator.nextNode();
-  }
-  nodes.forEach((n) => {
-    update(n, t);
+    let node = nodeIterator.nextNode();
+    while (node) {
+      nodes.push(node);
+      node = nodeIterator.nextNode();
+    }
+    nodes.forEach((n) => {
+      update(n, t);
+    });
   });
-});
 
-const t1 = performance.now();
-console.log(`Document scanning took ${t1 - t0} milliseconds.`);
+  const t1 = performance.now();
+  console.log(`Document scanning took ${t1 - t0} milliseconds.`);
+};
+
+(async () => {
+  const response = await chrome.runtime.sendMessage({ onStatus: "" });
+
+  if (response.status === "ON") {
+    run();
+  }
+
+  console.log(response);
+})();
