@@ -65,7 +65,6 @@ const run = () => {
 
 (async () => {
   const response = await chrome.runtime.sendMessage({ onStatus: "" });
-
   if (response.status === "ON") {
     run();
   }

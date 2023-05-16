@@ -1,23 +1,24 @@
-var isOn = "ON";
-
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.action.setBadgeText({
-    text: "ON",
-  });
-});
+var isOn: "ON" | "OFF" = "ON";
+const iconPath = "../images/";
 
 chrome.action.onClicked.addListener(async (tab) => {
-  // Retrieve the action badge to check if the extension is 'ON' or 'OFF'
-  const prevState = await chrome.action.getBadgeText({});
-  // Next state will always be the opposite
-  const nextState = prevState === "ON" ? "OFF" : "ON";
-
-  // Set the action badge to the next state
-  await chrome.action.setBadgeText({
-    text: nextState,
-  });
-
-  isOn = nextState;
+  if (isOn === "ON") {
+    chrome.action.setIcon({
+      path: {
+        "16": iconPath + "icon-1.png",
+        "32": iconPath + "icon-1.png",
+      },
+    });
+    isOn = "OFF";
+  } else {
+    chrome.action.setIcon({
+      path: {
+        "16": iconPath + "icon-16.png",
+        "32": iconPath + "icon-32.png",
+      },
+    });
+    isOn = "ON";
+  }
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
