@@ -3,7 +3,8 @@
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "sourceMap": false
+    "sourceMap": false,
+    "types": ["bun-types"]
   },
   "files": ["src/index.ts", "src/tests.ts"]
 }
